@@ -21,16 +21,46 @@ const UsersService = {
             });
     },
 
+    // selectPhoneNumberExists3(db, user_phone) {
+    //     // TODO: Whoops... can't simply bcrypt a phone number and look
+    //     // for a match. Need to compareSync(). Read in every number and
+    //     // compare?
+    //     // Man this will be slow...
+    //     return db('users')
+    //         .select('user_phone')
+    //         // .then(phones => {
+    //         //     return phones;
+    //         // });
+    // },
+
+    // selectPhoneNumberExists2(db, user_phone) {
+    //     return db('users')
+    //         .select('user_phone')
+    //         .then(phoneHashes => {
+    //             phoneHashes.map(phoneHash => {
+    //                 console.log(phoneHash.user_phone);
+    //                 if(Helpers.bcryptCompare(user_phone, phoneHash.user_phone)) {
+    //                     throw new Error();
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => error);
+    // },
+    
     selectPhoneNumberExists(db, user_phone) {
-        // TODO: Whoops... can't simply bcrypt a phone number and look
-        // for a match. Need to compareSync(). Read in every number and
-        // compare?
-        // Man this will be slow...
         return db('users')
             .select('user_phone')
-            // .then(phones => {
-            //     return phones;
-            // });
+            .then(phoneHashes => {
+                for(let i = 0; i < phoneHashes.length; i++) {
+                    if(Helpers.bcryptCompare(user_phone, phoneHashes[i].user_phone)) {
+                        // matching phone found
+                        return true;
+                    }
+                }
+                // matching phone not found
+                return false;
+            })
+            .catch(error => error);
     },
 
     updateUserVerification(db, userPhoneHash) {
