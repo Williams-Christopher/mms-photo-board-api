@@ -57,7 +57,7 @@ usersRouter
                                     return res.status(204).send('Created');
                                 })
                                 .catch(error => {
-                                    // console.log(error);
+                                    console.log(error);
                                     return UsersService.deleteUnverifiedUser(req.app.get('db'), newUser.user_phone)
                                         .then(rows => {
                                             return res.status(400).json({error: `Verification message could not be sent`});

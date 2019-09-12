@@ -118,19 +118,52 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
                 }
                 processSMSReply(res, twiml, twimlReply);
             })
-
     }
     // MEDIA SUBMISSION
     else if (NumMedia >= 1) {
-        console.log('Media submission');
-        console.log('Submission: ', NumMedia, FromCity, Body, From);
-        twimlReply = `Received media submisssion with ${NumMedia} URLs`;
+        MMSService.selectUserRecordForPhone(db, From)
+            .then(result => {
+                if (!result) {
+                    throw new Error('User not found');
+                }
+                return result;
+            })
+            .then(userRecord => {
+                if (!userRecord[0].verified === true) {
+                    throw new Error('User not verified');
+                }
+                
+                const newMedia = MMSService.serializeMediaRecord({
+                    id: userRecord[0].id,
+                    url: req.body.MediaUrl0,
+                    caption: Body,
+                    city: FromCity,
+                });
+
+                MMSService.insertMedia(db, newMedia)
+                    .then(mediaId => {
+                        if(!mediaId) {
+                            throw new Error('Error inserting media');
+                        }
+                        return true;
+                    })
+                    processSMSReply(res, twiml, cannedReplies.submission_success);
+                    return true;
+            })
+            .catch(error => {
+                if(error.message === `User not found`) {
+                    processSMSReply(res, twiml, cannedReplies.submission_failure_bad_number);
+                } else if (error.message === `User not verified`) {
+                    processSMSReply(res, twiml, cannedReplies.submission_failure_unverified);
+                } else {
+                    processSMSReply(res, twiml, cannedReplies.submission_failure);
+                }
+            });
     }
     // NONE OF THESE CONDITIONS / CATCHALL
     else {
-        console.log('None of these somehow: ', req.body);
-        twimlReply = cannedReplies.general_failure;
-        processSMSReply(res, twiml, twimlReply);
+        console.info('At the end of handler logic. Shoudl we be here?', req.body);
+        processSMSReply(res, twiml, cannedReplies.general_failure);
     }
 });
 

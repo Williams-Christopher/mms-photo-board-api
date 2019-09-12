@@ -15,8 +15,7 @@ const MMSService = {
             })
             .then(matchingHash => {
                 if(!matchingHash) {
-                    throw new Error('a matching has was not found');
-                    // throw ('a matching hash was not found');
+                    throw new Error('Phone number could not be compareed to any existing hash');
                 }
                 
                 return db
@@ -25,15 +24,18 @@ const MMSService = {
                     .where('user_phone', matchingHash)
                     .then(record => {
                         if (!record) {
-                            throw new Error('Record not found');
-                            // throw ('Record not found');
+                            throw new Error('A record with the hash was not found');
                         }
+                        // A user record for with the hashed phone number was found
+                        // so return the user record [{id: 2, user_name: 'name' ... etc }]
                         return record;
                     })
-                    .catch(error => console.log('in the select: ', error));
+                    .catch(error => { throw new Error(error) });
             })
             .catch(error => {
-                // console.log('MATCHING PHONE HASH NOT FOUND error: ', error);
+                // Either a hash was not found that compares to the incoming phone number
+                // or a user record comtaining the hashed number was (somehow) not found
+                // return null
                 return null;
             });
     },
@@ -46,14 +48,6 @@ const MMSService = {
             })
             .update('verified', true)
             .returning('verified')
-            // .then(result => {
-            //     console.log(result);
-            //     return result
-            // })
-            // .catch(error => {
-            //     console.log(error);
-            //     return error;
-            // })
     },
 
     deleteUnverifiedUser(db, userPhoneHash) {
@@ -64,6 +58,19 @@ const MMSService = {
             })
             .del(); // returns # of affected rows
     },
+
+    insertMedia(db, mediaRecord = {}) {
+        return db('media').insert({...mediaRecord}).returning('id');
+    },
+
+    serializeMediaRecord(newMediaData = {}) {
+        return {
+            user_id: newMediaData.id,
+            media_url: newMediaData.url,
+            media_caption: xss(newMediaData.caption),
+            media_location: newMediaData.city,
+        };
+    }
 }
 
 module.exports = MMSService;

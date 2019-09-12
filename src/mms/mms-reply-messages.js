@@ -9,6 +9,7 @@ module.exports = {
     verify_failure_bad_number: `This phone number is not recognized. See ${webapp_url} to sign up or email ${support_email} for help.`,
     submission_success: `Thank you! Your submission was received and sucessfully posted!`,
     submission_failure: `There was an error posting your submission. Please try again later or email ${support_email} for help.`,
+    submission_failure_unverified: `Only verified phones may make submissions. Reply YES to verify your account or NO to delete your account.`,
     submission_failure_bad_number: `This phone number is not recognized. See ${webapp_url} to sign up or email ${support_email} for help.`,
     general_failure: `I'm not sure what you're asking me to do. Please try again or email ${support_email} for help.`
 };
