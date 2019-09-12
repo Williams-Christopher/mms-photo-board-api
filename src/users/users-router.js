@@ -73,6 +73,6 @@ usersRouter
                 console.log(error);
                 next();
             });
-    })
+    });
 
 module.exports = usersRouter;

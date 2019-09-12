@@ -39,7 +39,7 @@ const UsersService = {
     //         .then(phoneHashes => {
     //             phoneHashes.map(phoneHash => {
     //                 console.log(phoneHash.user_phone);
-    //                 if(Helpers.bcryptCompare(user_phone, phoneHash.user_phone)) {
+    //                 if(Helpers.hashCompare(user_phone, phoneHash.user_phone)) {
     //                     throw new Error();
     //                 }
     //             });
@@ -52,7 +52,7 @@ const UsersService = {
             .select('user_phone')
             .then(phoneHashes => {
                 for(let i = 0; i < phoneHashes.length; i++) {
-                    if(Helpers.bcryptCompare(user_phone, phoneHashes[i].user_phone)) {
+                    if(Helpers.hashCompare(user_phone, phoneHashes[i].user_phone)) {
                         // matching phone found
                         return true;
                     }
@@ -61,15 +61,6 @@ const UsersService = {
                 return false;
             })
             .catch(error => error);
-    },
-
-    updateUserVerification(db, userPhoneHash) {
-        return db('users')
-            .where({
-                'user_phone' : userPhoneHash
-            })
-            .update('verified', true)
-            .returning('*');
     },
 
     deleteUnverifiedUser(db, userPhoneHash) {
@@ -100,8 +91,8 @@ const UsersService = {
             user_first_name : xss(newUser.user_first_name),
             user_last_name : xss(newUser.user_last_name),
             user_name : xss(newUser.user_name),
-            user_password : Helpers.bcryptString(newUser.user_password),
-            user_phone : Helpers.bcryptString(newUser.user_phone),
+            user_password : Helpers.hashString(newUser.user_password),
+            user_phone : Helpers.hashString(newUser.user_phone),
             verified : false,
             // created : new Date(),
             // modified : new Date()
