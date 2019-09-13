@@ -70,8 +70,21 @@ describe(`Auth endpoints`, () => {
             beforeEach(`seed users table`, () => testHelpers.seedUsersTable(db));
             afterEach(`truncate tables`, () => testHelpers.truncateTables(db));
 
-            const { user_name, user_password } = testHelpers.createUsersArray()[0];
+            it(`provided valid user_name and password but user has not verified their phone, returns 409 'User has not verified phone'`, () => {
+                const { user_name, user_password } = testHelpers.createUsersArray()[1];
+                const testUser = {
+                    user_name: user_name,
+                    password: user_password,
+                };
+
+                return supertest(app)
+                    .post('/api/auth')
+                    .send(testUser)
+                    .expect(409, { error: `User has not verified phone` });
+            })
+
             it(`returns a proper bearer auth token when given a good user_name and password`, () => {
+                const { user_name, user_password } = testHelpers.createUsersArray()[0];
                 const testUser = {
                     user_name: user_name,
                     password: user_password,

@@ -58,7 +58,7 @@ function createUsersArray() {
             user_name: 'mal',
             user_password: 'Browncoats!1',
             user_phone: '+11234567890',
-            verified: 'false'
+            verified: 'true'
         },
         {
             user_first_name: 'Hoban',
@@ -90,7 +90,7 @@ function createUsersArray() {
             user_name: 'rtamm',
             user_password: 'Vo1c35',
             user_phone: '+15678901234',
-            verified: 'false'
+            verified: 'true'
         }
     ];
 };

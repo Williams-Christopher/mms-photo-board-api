@@ -27,6 +27,10 @@ authRouter
                     return res.status(400).json({ error: `Invalid user name or password`});
                 }
 
+                if(userRecord.verified === false) {
+                    return res.status(409).json({ error: `User has not verified phone`});
+                }
+
                 const tokenSubject = userRecord.user_name;
                 const tokenPayload = { id: userRecord.id };
 
