@@ -23,21 +23,25 @@ function seedUsersTable(db) {
 };
 
 function seedMediaTable(db) {
-
+    const testMedia = createMediaArray();
+    return db('media')
+        .insert(testMedia);
 };
 
 function seedMediaLikesTable(db) {
-
+    const testMediaLikes = createMediaLikesArray();
+    return db('media_likes')
+        .insert(testMediaLikes)
 };
 
-function seedAllTables(db) {
-    seedUsersTable(db);
-    seedMediaTable(db);
-    seedMediaLikesTable(db);
+async function seedAllTables(db) {
+    await seedUsersTable(db);
+    await seedMediaTable(db);
+    await seedMediaLikesTable(db);
 };
 
 function makeDateInPast(daysInPast = 0) {
-    let date = newDate();
+    let date = new Date();
     if (daysInPast > 0) {
         date.setDate(date.getDate() - daysInPast)
         return date.toISOString();
@@ -97,7 +101,7 @@ function createMediaArray() {
             media_url: 'https://picsum.photos/1027/768',
             media_caption: '#Payday',
             media_location: 'Serenity',
-            created: new Date(),
+            created: makeDateInPast(0),
         },
         {
             user_id: 2,
@@ -109,7 +113,7 @@ function createMediaArray() {
         {
             user_id: 3,
             media_url: 'https://picsum.photos/4032/3024',
-            media_captions: 'Shiny!',
+            media_caption: 'Shiny!',
             media_location: 'Canton',
             created: makeDateInPast(1),
         },

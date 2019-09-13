@@ -23,19 +23,9 @@ describe(`Users endpoints`, () => {
     describe(`POST /api/users`, () => {
         describe(`Validating users`, () => {
             context(`A new user - passing`, () => {
-                // Consistently returning 400?
-                // Error: expected 204 "No Content", got 400 "Bad Request"
-                // at Test._assertStatus (node_modules/supertest/lib/test.js:268:12)
-                // at Test._assertFunction (node_modules/supertest/lib/test.js:283:11)
-                // at Test.assert (node_modules/supertest/lib/test.js:173:18)
-                // at Server.localAssert (node_modules/supertest/lib/test.js:131:12)
-                // at emitCloseNT (net.js:1609:8)
-                // at process._tickCallback (internal/process/next_tick.js:63:19)
-                it.skip(`should create the user given good values including a unique user_name, unique user_phone, and valid password`, () => {
+                it(`should create the user given good values including a unique user_name, unique user_phone, and valid password`, () => {
                     let testUser = testHelpers.createUsersArray()[0];
                     testUser.user_phone = '+15124360259';
-                    delete testUser.user_phone;
-                    console.log(testUser);
                     return supertest(app)
                         .post('/api/users')
                         .send(testUser)

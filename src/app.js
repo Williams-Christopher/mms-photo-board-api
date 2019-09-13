@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const usersRouter = require('./users/users-router');
 const mmsRouter = require('./mms/mms-routes');
+const mediaRouter = require('./media/media-routes');
 
 const app = express();
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
@@ -18,8 +19,10 @@ app.use(helmet());
 // Our route handlers
 app.use('/api/users', usersRouter);
 app.use('/api/mms', mmsRouter);
+app.use('/api/media', mediaRouter);
 
 app.use(function errorHandler(error, req, res, next) {
+    console.log('Error middleware here: ', error);
     let response;
     if (NODE_ENV === 'production') {
         response = { error: { message: 'Server error' } };
