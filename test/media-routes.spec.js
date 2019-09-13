@@ -19,7 +19,7 @@ describe(`Media endpoints`, () => {
     describe(`GET /api/media`, () => {
         beforeEach(`insert test media`, () => testHelpers.seedAllTables(db));
         afterEach(`clean tables`, () => testHelpers.truncateTables(db));
-        
+
         it(`returns 200 and an array of all the test media`, () => {
             return supertest(app)
                 .get('/api/media')
@@ -44,43 +44,75 @@ describe(`Media endpoints`, () => {
         beforeEach(`insert test media`, () => testHelpers.seedAllTables(db));
         afterEach(`clean tables`, () => testHelpers.truncateTables(db));
 
-        it(`given user_id and media_id existing in media_likes, deletes the 'like'`, () => {
-            const existingLikeRecord = {user_id: 1, media_id: 1};
-            return supertest(app)
-                .post('/api/media')
-                .send(existingLikeRecord)
-                .expect(204)
-                .expect(res => {
-                    return db
-                        .from('media_likes')
-                        .select('id')
-                        .where(existingLikeRecord)
-                        .then(result => {
-                            expect(result).to.be.an('array');
-                            expect(result.length).to.equal(0);
-                        })
-                });
+        context(`given an invalid or non-existing auth token`, () => {
+            const testUser = testHelpers.createUsersArray()[0];
+
+            it(`returns 401 'Missing bearer token' with missing JWT`, () => {
+                const existingLikeRecord = { user_id: 1, media_id: 1 };
+
+                return supertest(app)
+                    .post('/api/media')
+                    .send(existingLikeRecord)
+                    .set('Authorization', '')
+                    .expect(401, { error: `Missing bearer token` });
+            })
+
+            it(`returns 401 'Unauthorized request' with an invalid JWT`, () => {
+                const existingLikeRecord = { user_id: 1, media_id: 1 };
+
+                return supertest(app)
+                    .post('/api/media')
+                    .send(existingLikeRecord)
+                    .set('Authorization', `${testHelpers.createBearerToken(testUser, 'not-the-right-secret')}`)
+                    .expect(401, { error: `Unauthorized request` });
+            });
         });
 
-        it(`given user_id and media_id that don't exist in media_likes, adds a new 'like'`, () => {
-            const newLikeRecord = {user_id: 1, media_id: 2};
-            return supertest(app)
-                .post('/api/media')
-                .send(newLikeRecord)
-                .expect(204)
-                .expect(res => {
-                    return db
-                        .from('media_likes')
-                        .select('*')
-                        .where(newLikeRecord)
-                        .then(result => {
-                            expect(result).to.be.an('array');
-                            expect(result.length).to.equal(1);
-                            expect(result[0]).to.have.property('id');
-                            expect(result[0].user_id).to.equal(1);
-                            expect(result[0].media_id).to.equal(2);
-                        });
-                });
+        context(`given a valid auth token`, () => {
+            const testUser = testHelpers.createUsersArray()[0];
+
+            it(`given user_id and media_id existing in media_likes, deletes the 'like'`, () => {
+                const existingLikeRecord = { user_id: 1, media_id: 1 };
+
+                return supertest(app)
+                    .post('/api/media')
+                    .send(existingLikeRecord)
+                    .set('Authorization', `${testHelpers.createBearerToken(testUser)}`)
+                    .expect(204)
+                    .expect(res => {
+                        console.log(res.body)
+                        return db
+                            .from('media_likes')
+                            .select('id')
+                            .where(existingLikeRecord)
+                            .then(result => {
+                                expect(result).to.be.an('array');
+                                expect(result.length).to.equal(0);
+                            })
+                    });
+            });
+
+            it(`given user_id and media_id that don't exist in media_likes, adds a new 'like'`, () => {
+                const newLikeRecord = { user_id: 1, media_id: 2 };
+                return supertest(app)
+                    .post('/api/media')
+                    .send(newLikeRecord)
+                    .set('Authorization', `${testHelpers.createBearerToken(testUser)}`)
+                    .expect(204)
+                    .expect(res => {
+                        return db
+                            .from('media_likes')
+                            .select('*')
+                            .where(newLikeRecord)
+                            .then(result => {
+                                expect(result).to.be.an('array');
+                                expect(result.length).to.equal(1);
+                                expect(result[0]).to.have.property('id');
+                                expect(result[0].user_id).to.equal(1);
+                                expect(result[0].media_id).to.equal(2);
+                            });
+                    });
+            });
         });
     });
 });

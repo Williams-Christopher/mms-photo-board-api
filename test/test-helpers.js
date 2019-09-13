@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 function truncateTables(db) {
     return db.raw(
@@ -224,6 +225,16 @@ function createMediaLikesArray() {
     ];
 };
 
+function createBearerToken(user = {}, secret = process.env.JWT_SECRET) {
+    const token = jwt.sign(
+        { user_id: user.id },
+        secret,
+        { subject: user.user_name, algorithm: 'HS256'}
+    );
+
+    return `Bearer ${ token }`;
+};
+
 module.exports = {
     createUsersArray,
     createMediaArray,
@@ -234,4 +245,5 @@ module.exports = {
     seedMediaLikesTable,
     seedAllTables,
     makeDateInPast,
+    createBearerToken,
 };
