@@ -78,9 +78,8 @@ describe(`Media endpoints`, () => {
                     .post('/api/media')
                     .send(existingLikeRecord)
                     .set('Authorization', `${testHelpers.createBearerToken(testUser)}`)
-                    .expect(204)
+                    .expect(200, {newLikes: '3'})
                     .expect(res => {
-                        console.log(res.body)
                         return db
                             .from('media_likes')
                             .select('id')
@@ -98,7 +97,7 @@ describe(`Media endpoints`, () => {
                     .post('/api/media')
                     .send(newLikeRecord)
                     .set('Authorization', `${testHelpers.createBearerToken(testUser)}`)
-                    .expect(204)
+                    .expect(200, {newLikes: '3'})
                     .expect(res => {
                         return db
                             .from('media_likes')

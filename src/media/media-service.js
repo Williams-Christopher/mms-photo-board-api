@@ -52,7 +52,19 @@ const MediaService = {
                 user_id: userId,
                 media_id: mediaId
             })
-            .returning('id');
+            .returning('id')
+            .then(newId => {
+                if(!newId) {
+                    throw new Error('No ID returned from insert');
+                }
+
+                return db
+                    .from('media_likes')
+                    .count('media_id', {as: 'likes'})
+                    .where({media_id: mediaId})
+                    .returning('likes');
+            })
+            .catch(error => error);
     },
 
     deleteUserLikeForMedia(db, userId, mediaId) {
@@ -62,7 +74,19 @@ const MediaService = {
                 user_id: userId,
                 media_id: mediaId
             })
-            .del();
+            .del()
+            .then(rowsAffected => {
+                if(rowsAffected !== 1) {
+                    throw new Error('There was an error deleting from the table');
+                }
+
+                return db
+                    .from('media_likes')
+                    .count('media_id', {as: 'likes'})
+                    .where({media_id: mediaId})
+                    .returning('likes');
+            })
+            .catch(error => error);
     },
 };
 

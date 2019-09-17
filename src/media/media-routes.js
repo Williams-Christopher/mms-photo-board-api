@@ -28,22 +28,24 @@ mediaRouter
             .then(result => {
                 if(result) {
                     MediaService.deleteUserLikeForMedia(db, req.userRecord.id, media_id)
-                        .then(rowsAffected => {
-                            if(rowsAffected != 1) {
+                        .then(newLikesCount => {
+                            if(!newLikesCount) {
                                 throw new Error('Error deleting from media_likes');
                             }
-                            return res.status(204).end();
+                            const newLikes = newLikesCount[0].likes;
+                            return res.json({newLikes: `${newLikes}`});
                         })
                         .catch(error => {
                             return res.status(400).json({ error: `Like was not removed`});
                         })
                 } else {
                     MediaService.insertUserLikeForMedia(db, req.userRecord.id, media_id)
-                        .then(insertedId => {
-                            if(!insertedId) {
+                        .then(newLikesCount => {
+                            if(!newLikesCount) {
                                 throw new Error('Error inserting to media_likes');
                             }
-                            return res.status(204).end();
+                            const newLikes = newLikesCount[0].likes;
+                            return res.json({newLikes: `${newLikes}`});
                         })
                         .catch(error => {
                             return res.status(400).json({ error: `Like was not added`});
