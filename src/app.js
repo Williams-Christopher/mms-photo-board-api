@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const { NODE_ENV } = require('./config');
+const { NODE_ENV, CLIENT_ORIGIN } = require('./config');
 const usersRouter = require('./users/users-router');
 const mmsRouter = require('./mms/mms-routes');
 const mediaRouter = require('./media/media-routes');
@@ -11,8 +11,7 @@ const authRouter = require('./auth/auth-router');
 
 const app = express();
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
-const { CLIENT_ORIGIN } = require('./config');
-
+// const { CLIENT_ORIGIN } = require('./config');
 app.use(morgan(morganOption));
 app.use(cors({ origin: CLIENT_ORIGIN }));
 app.use(helmet());
