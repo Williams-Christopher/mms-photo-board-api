@@ -54,7 +54,7 @@ usersRouter
                                 })
                                 .then(message => {
                                     //console.log(message);
-                                    return res.status(204).send('Created');
+                                    return res.status(204).end();
                                 })
                                 .catch(error => {
                                     console.log(error);
