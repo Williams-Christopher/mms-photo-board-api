@@ -1,10 +1,5 @@
 const MediaService = {
     selectAllMedia(db) {
-        // select m.id, m.user_id, m.media_url, m.media_caption, m.media_location, m.created, count(ml.media_id) as likes from media m
-        // left join media_likes ml
-        // on m.id = ml.media_id
-        // group by m.id, m.user_id, m.media_url, m.media_caption, m.media_location, m.created
-        // order by m.id
         return db
             .from('media')
             .select([

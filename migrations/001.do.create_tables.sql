@@ -24,7 +24,3 @@ CREATE TABLE media_likes (
     user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     media_id INTEGER REFERENCES media(id) ON DELETE CASCADE
 );
-
--- ALTER TABLE media
---     ADD CONSTRAINT user_id_fk
---     FOREIGN KEY users(id) REFERENCES

@@ -34,7 +34,7 @@ const MMSService = {
             })
             .catch(error => {
                 // Either a hash was not found that compares to the incoming phone number
-                // or a user record comtaining the hashed number was (somehow) not found
+                // or a user record containing the hashed number was (somehow) not found
                 // return null
                 return null;
             });

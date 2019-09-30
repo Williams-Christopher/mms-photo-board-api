@@ -15,7 +15,6 @@ const jsonBodyParser = express.json();
 const urlBodyParser = express.urlencoded({ extended: false });
 
 mmsRouter.post('/', urlBodyParser, (req, res, next) => {
-    // tired of typing req.app.get('db');
     const db = req.app.get('db');
 
     // create twiml message bits
@@ -24,18 +23,14 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
 
     // grab keys from req.body
     const { NumMedia, FromCity, Body, From } = req.body;
-    console.log('These values from req.body: '.NumMedia, FromCity, Body, From);
 
     // VERIFICATION REPLY
-
     if (NumMedia == 0 && Body.toLowerCase().includes('yes')) {
         MMSService.selectUserRecordForPhone(db, From)
             .then(result => {
                 if (!result) {
                     throw new Error('Result from selectUserRecordForPhone was null');
-                    // throw ('Result from selectUserRecordForPhone was null');
                 }
-                // console.log('RESULT FROM SELECT NIGHTMARE: ', result)
                 return result;
             })
             .then(userRecord => {
@@ -54,7 +49,6 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
                 return true;
             })
             .then(updateSuccess => {
-                console.log('SUCCESS: ', updateSuccess);
                 if (!updateSuccess) {
                     throw ('User not updated')
                 }
@@ -65,7 +59,6 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
                 return true
             })
             .catch(error => {
-                // console.log('ERROR FROM SELECT-VERIFY: ', error)
                 if (error.message === 'Already verified') {
                     twimlReply = cannedReplies.verify_already_complete;
                 } else {
@@ -78,9 +71,7 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
             .then(result => {
                 if (!result) {
                     throw new Error('Result from selectUserRecordForPhone was null');
-                    // throw ('Result from selectUserRecordForPhone was null');
                 }
-                // console.log('RESULT FROM SELECT NIGHTMARE: ', result)
                 return result;
             })
             .then(userRecord => {
@@ -99,7 +90,6 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
                 return true;
             })
             .then(deletionSuccess => {
-                console.log('SUCCESS: ', deletionSuccess);
                 if (!deletionSuccess) {
                     throw ('User not deleted')
                 }
@@ -110,7 +100,6 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
                 return true
             })
             .catch(error => {
-                // console.log('ERROR FROM SELECT-VERIFY: ', error)
                 if (error.message === 'Already verified') {
                     twimlReply = cannedReplies.verify_already_complete;
                 } else {
@@ -168,7 +157,6 @@ mmsRouter.post('/', urlBodyParser, (req, res, next) => {
 });
 
 function processSMSReply(res, twiml, message) {
-    console.log('processSMSReply: ', message)
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(twiml.message(message).toString());
 }

@@ -53,7 +53,6 @@ usersRouter
                                     to: user_phone
                                 })
                                 .then(message => {
-                                    //console.log(message);
                                     return res.status(204).end();
                                 })
                                 .catch(error => {
