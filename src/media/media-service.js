@@ -20,7 +20,7 @@ const MediaService = {
                 'media.media_location',
                 'media.created'
             ])
-            .orderBy('media.id')
+            .orderBy('media.created', 'desc')
     },
 
     userLikesMedia(db, userId, mediaId) {
