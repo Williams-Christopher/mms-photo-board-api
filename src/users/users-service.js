@@ -1,8 +1,6 @@
 const xss = require('xss');
 const Helpers = require('../helpers/helpers');
-const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
-//const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&]){7})[\S]+/
-
+const PASSWORD_REGEX = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])(?=.{7,})[\S]+/
 
 const UsersService = {
     insertUser(db, newUser) {
@@ -57,7 +55,7 @@ const UsersService = {
             return 'Password is too long';
         }
 
-        if(!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
+        if(!PASSWORD_REGEX.test(password)) {
             return 'Password does not meet complexity requirements'
         }
     },
