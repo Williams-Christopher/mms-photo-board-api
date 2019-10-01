@@ -49,7 +49,7 @@ const UsersService = {
     },
 
     validatePasswordRequirements(password) {
-        if(password.length < 8) {
+        if(password.length < 7) {
             return 'Password is too short';
         }
 
