@@ -32,12 +32,12 @@ Response body for GET /api/media
 ```
 [
     {
-        id,                 // The unique id for this media record
-        user_id,            // The numeric user id of the user that contributed the photo
-        media_url,          // The URL of the actual photo
-        media_caption,      // The text caption for the photo
-        media_location,     // The city or geographic placename associated with the phone
-        created,            // The date and time the media record was created
+        id: <number>,                 // The unique id for this media record
+        user_id: <number>,            // The numeric user id of the user that contributed the photo
+        media_url: <string>,          // The URL of the actual photo
+        media_caption: <string>,      // The text caption for the photo
+        media_location: <string>,     // The city or geographic placename associated with the phone
+        created: <ISO 9660 date>,     // The date and time the media record was created
     },
     ...
 ]
@@ -46,11 +46,11 @@ Response body for GET /api/media
 Request body for a new user creation request submitted to POST /api/users
 ```
 {
-    user_first_name,    // The first name of the user
-    user_name,          // The requested user name
-    user_last_name,     // OPTIONAL - The users' last name
-    user_password,      // The users' password
-    user_phone,         // The users' SMS capable phone number in the format +12223334444
+    user_first_name: <string>,    // The first name of the user
+    user_name: <string>,          // The requested user name
+    user_last_name: <string>,     // OPTIONAL - The users' last name
+    user_password: <string>,      // The users' password
+    user_phone: <string>,         // The users' SMS capable phone number in the format +12223334444
 }
 ```
 
@@ -62,10 +62,24 @@ Request body for POST /api/auth
 }
 ```
 
+Response body for POST /api/auth
+```
+{
+    authToken: <JWT>,          // Contains the JSON Web Token generated for a successful login request
+}
+```
+
 Request body for POST /api/media
 ```
 {
-    media_id,           // The id of the media to toggle a like for
+    media_id: <number>,           // The id of the media to toggle a like for
+}
+```
+
+Response body for errors
+```
+{
+    error: <message>,       // An error message describing the reason for the server returning status 400
 }
 ```
 ### Tech stack
