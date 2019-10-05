@@ -37,7 +37,7 @@ Response body for GET /api/media
         media_url: <string>,          // The URL of the actual photo
         media_caption: <string>,      // The text caption for the photo
         media_location: <string>,     // The city or geographic placename associated with the phone
-        created: <ISO 9660 date>,     // The date and time the media record was created
+        created: <ISO8601 date>,     // The date and time the media record was created
     },
     ...
 ]
