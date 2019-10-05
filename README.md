@@ -11,7 +11,7 @@
 ### Summary
 *This is the API for MMS Photo Board. The client web application can be found at this [repo](https://github.com/Williams-Christopher/mms-photo-board).*
 
-MMS Photo Board is based around submission of photos with captions to a shared "photo board" via MMS (text messaging photos) and consuming them via a web application. The idea is that many times we might want to share a photo without having to deal with the stream of information and distration that comes to us when we open our social media applicaiton of choice. Let's explore a clean and easy way to upload photos with a mobile tool that is a core part of every mobile device and most everyone, even grandma, can use.
+MMS Photo Board is based around submission of photos with captions to a shared "photo board" via MMS (text messaging photos) and consuming them via a web application. Aside from being a relatively novel way to post to a website, the idea is that many times we might want to share a photo without having to deal with the stream of information and distration that comes to us when we open our social media applicaiton of choice. Let's explore a clean and easy way to upload photos with a mobile first application that is a core part of every mobile device and that most everyone, even grandma, can use.
 
 The goals of the project were:
 * Utilization of the Twilio SMS/MMS API to provide a more meaningful and interesting interface to a web application than account validation and password recovery.
