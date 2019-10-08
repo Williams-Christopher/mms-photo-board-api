@@ -6,7 +6,9 @@
 [MMS Photo Board client hosted at Zeit](https://mms-photo-board.cwilliams.now.sh)
 
 ### Screenshots
-*Screenshots to be added when additional styling of the application has been completed.*
+App shot 1 | App shot 2 | App shot 3
+-|-|-
+<img src='https://user-images.githubusercontent.com/26190276/66362047-db6f5580-e946-11e9-8918-f8b7c1bfb16a.png' width='500' style='display:block;'/> |<img src='https://user-images.githubusercontent.com/26190276/66362109-16718900-e947-11e9-8757-758dbd982e48.png' width='500' /> | <img src='https://user-images.githubusercontent.com/26190276/66362749-85e87800-e949-11e9-8928-04f07063028a.png' width='500' />
 
 ### Summary
 *This is the API for MMS Photo Board. The client web application can be found at this [repo](https://github.com/Williams-Christopher/mms-photo-board).*
