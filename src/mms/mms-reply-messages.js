@@ -2,7 +2,7 @@ const support_email = `MMSPhotoBoard@chriswillia.ms`;
 const webapp_url = `https://mms-photo-board.cwilliams.now.sh`
 
 module.exports = {
-    verify_success: `Thank you. Your account is now verified.`,
+    verify_success: `Thank you. Your account is now verified. Your submissions to MMS Photo Board should be sent to this number so keep it handy!`,
     verify_failure: `I couldn't verify your number. Please email ${support_email} for help.`,
     verify_decline: `Sorry you're leaving. :( Please sign up again later and feel free to email ${support_email} with feedback.`,
     verify_already_complete: `Your phone is already verified. You can submit photos or email ${support_email} for help.`,
