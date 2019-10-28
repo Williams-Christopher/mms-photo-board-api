@@ -18,7 +18,7 @@ mediaRouter
                 res.send(resultSet);
             })
             .catch(error => {
-                console.log(error);
+                res.status(400).json({error: `There was a unknown error retreiving media records`});
             });
     })
     .post('/', requireAuth, jsonBodyParser, (req, res, next) => {
