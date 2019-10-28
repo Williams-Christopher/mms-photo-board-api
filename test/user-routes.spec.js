@@ -64,7 +64,7 @@ describe(`Users endpoints`, () => {
                     .expect(400, { error: 'Phone number is in use' })
             });
 
-            it(`should return 400 'Verification message could not be sent' if the validation text message can not be sent`, () => {
+            it(`should return 400 'Verification message could not be sent' if an invalid phone number is supplied`, () => {
                 const testUser = testHelpers.createUsersArray()[0];
                 testUser.user_name = 'doesnotexist';
                 testUser.user_phone = '+1NotAPhoneNumber'
