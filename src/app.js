@@ -23,12 +23,12 @@ app.use('/api/auth', authRouter);
 
 app.use(function errorHandler(error, req, res, next) {
     let response;
-    // if (NODE_ENV === 'production') {
-    //     response = { error: { message: 'Server error' } };
-    // } else {
-    //     response = { error };
-    // };
-    response = { error };
+    if (NODE_ENV === 'production') {
+        response = { error: { message: 'Server error' } };
+    } else {
+        response = { error };
+    };
+
     res.status(500).json(response);
 });
 
